@@ -13,26 +13,26 @@ class SharedMutex
     	
     	void shared_lock(){
 			innerMutex_.lock();
-    		readersNumber_++;
+			readersNumber_++;
 			innerMutex_.unlock();
 		}
 		
 		void shared_unlock(){
-    		readersNumber_--;
+			readersNumber_--;
 		}
     	
-    	void lock(){
+		void lock(){
 			innerMutex_.lock();
 			while(readersNumber_);
-    	}
+		}
     	
-    	void unlock(){
-    	    innerMutex_.unlock();
-    	}
+		void unlock(){
+			innerMutex_.unlock();
+		}
    		
-   	private:
-    	std::mutex innerMutex_;
-   		std::atomic<int> readersNumber_;
+	private:
+		std::mutex innerMutex_;
+		std::atomic<int> readersNumber_;
 };
 
 #endif
