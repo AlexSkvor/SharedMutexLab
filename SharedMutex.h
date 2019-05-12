@@ -9,12 +9,12 @@ class SharedMutex
 	public:
 		
     	explicit SharedMutex():
-    	    readersNumber_(0),
-    	    writersNumber_(0){}
+    	    readersNumber_(0){}
     	
     	void shared_lock(){
-    		while(writersNumber_);
+			innerMutex_.lock();
     		readersNumber_++;
+			innerMutex_.unlock();
 		}
 		
 		void shared_unlock(){
@@ -22,20 +22,17 @@ class SharedMutex
 		}
     	
     	void lock(){
-    	    writersNumber_++;
-    	    while(readersNumber_);
-    	    innerMutex_.lock();
+			innerMutex_.lock();
+			while(readersNumber_);
     	}
     	
     	void unlock(){
-    	    writersNumber_--;
     	    innerMutex_.unlock();
     	}
    		
    	private:
     	std::mutex innerMutex_;
    		std::atomic<int> readersNumber_;
-    	std::atomic<int> writersNumber_;
 };
 
 #endif
