@@ -8,10 +8,10 @@ class SharedMutex
 {
 	public:
 		
-    	explicit SharedMutex():
-    	    readersNumber_(0){}
+		explicit SharedMutex():
+			readersNumber_(0){}
     	
-    	void shared_lock(){
+		void shared_lock(){
 			innerMutex_.lock();
 			readersNumber_++;
 			innerMutex_.unlock();
