@@ -4,35 +4,20 @@
 #include <mutex>
 #include <atomic>
 
-class SharedMutex
-{
+class SharedMutex: public std::mutex{
 	public:
 		
-		explicit SharedMutex():
-			readersNumber_(0){}
+    	explicit SharedMutex();
     	
-		void shared_lock(){
-			innerMutex_.lock();
-			readersNumber_++;
-			innerMutex_.unlock();
-		}
-		
-		void shared_unlock(){
-			readersNumber_--;
-		}
+    	void shared_lock();
+		void shared_unlock();
     	
-		void lock(){
-			innerMutex_.lock();
-			while(readersNumber_);
-		}
-    	
-		void unlock(){
-			innerMutex_.unlock();
-		}
+    	void lock();
+    	void unlock();
    		
-	private:
-		std::mutex innerMutex_;
-		std::atomic<int> readersNumber_;
+   	private:
+   		std::atomic<int> readersNumber_;
 };
 
 #endif
+
